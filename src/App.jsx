@@ -1,39 +1,74 @@
-import FeaturedTitle from "./components/FeaturedTitle";
-import {
-  products_row_one,
-  products_row_three,
-  products_row_two,
-} from "./misc/fakeData";
+import React, { useEffect, useState } from "react";
 
-import ProductCard from "./components/ProductCard";
-import ProductList from "./components/ProductList";
-import NavBar from "./components/NavBar";
+const ProfileCard = ({ profile }) => {
+  const { name, email, picture } = profile;
 
-function App() {
+  if (!name || !email || !picture) return null;
+
   return (
-    <div className="max-w-screen-xl m-auto mb-20">
-      <NavBar />
-      <div className="xl:px-0 px-2">
-        <FeaturedTitle className="py-3" text="Featured Products" />
-        <div className="sm:flex justify-between items-center sm:space-x-5 space-x-0 sm:space-y-0 space-y-3">
-          <div className="sm:w-2/4">
-            <div className="aspect-w-16 aspect-h-9">
-              <img src="./images/banner_left.png" alt="" />
-            </div>
-          </div>
-          <div className="sm:w-2/4">
-            <div className="aspect-w-16 aspect-h-9">
-              <img src="./images/banner_right.png" alt="" />
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="max-w-sm mx-auto rounded bg-gray-50 shadow p-2 text-center">
+      <img className="w-24 h-24 mx-auto rounded-full" src={picture} alt="" />
+      <h1 className="text-xl">{name}</h1>
+      <p className="text-gray-500">{email}</p>
+    </div>
+  );
+};
 
-      <ProductList heading="Smart Watches" data={products_row_one} />
-      <ProductList heading="Ladies Shoes" data={products_row_two} />
-      <ProductList heading="Gents Shoes" data={products_row_three} />
+export default function App() {
+  const [count, setCount] = useState(0);
+  const [profile, setProfile] = useState({});
+  const [online, setOnline] = useState(true);
+
+  const fetchUser = async () => {
+    if (!online) return;
+    const res = await fetch("https://randomuser.me/api/");
+    const { results } = await res.json();
+    setProfile({
+      name: results[0].name.first,
+      email: results[0].email,
+      picture: results[0].picture.medium,
+    });
+  };
+
+  useEffect(() => {
+    if (online) {
+      setProfile({});
+    }
+  }, [online]);
+
+  useEffect(() => {
+    fetchUser();
+    // eslint-disable-next-line
+  }, []);
+
+  return (
+    <div>
+      <div className="w-56 text-center mx-auto py-20">
+        <h1 className="text-green-500">{online ? "Online" : "Offline"}</h1>
+
+        <button
+          onClick={() => setCount(count + 1)}
+          className="px-3 py-1 border border-gray-500"
+          id="button"
+        >
+          You Clicked Me {count}
+        </button>
+        <button
+          onClick={fetchUser}
+          className="mt-10 px-3 py-1 border border-gray-500"
+          id="button"
+        >
+          Next Profile
+        </button>
+        <button
+          onClick={() => setOnline(!online)}
+          className="mt-10 px-3 py-1 border border-gray-500"
+          id="button"
+        >
+          {online ? "Logout" : "Login"}
+        </button>
+      </div>
+      <ProfileCard profile={profile} />
     </div>
   );
 }
-
-export default App;

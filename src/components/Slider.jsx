@@ -27,6 +27,7 @@ export default function Slider() {
     return () => {
       pauseSlider();
     };
+    // eslint-disable-next-line
   }, []);
 
   const startSlider = () => {

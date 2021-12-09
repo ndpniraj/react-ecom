@@ -1,38 +1,23 @@
-import FeaturedTitle from "./components/FeaturedTitle";
-import {
-  products_row_one,
-  products_row_three,
-  products_row_two,
-} from "./misc/fakeData";
+import { Route, Routes } from "react-router";
 
-import ProductList from "./components/ProductList";
+import About from "./components/About";
+import Cart from "./components/Cart";
+import Contact from "./components/Contact";
+import Home from "./components/Home";
 import NavBar from "./components/NavBar";
-import Slider from "./components/Slider";
+import Shop from "./components/Shop";
 
 function App() {
   return (
     <div className="max-w-screen-xl m-auto mb-20">
       <NavBar />
-      <Slider />
-      <div className="xl:px-0 px-2">
-        <FeaturedTitle className="py-3" text="Featured Products" />
-        <div className="sm:flex justify-between items-center sm:space-x-5 space-x-0 sm:space-y-0 space-y-3">
-          <div className="sm:w-2/4">
-            <div className="aspect-w-16 aspect-h-9">
-              <img src="./images/banner_left.png" alt="" />
-            </div>
-          </div>
-          <div className="sm:w-2/4">
-            <div className="aspect-w-16 aspect-h-9">
-              <img src="./images/banner_right.png" alt="" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ProductList heading="Smart Watches" data={products_row_one} />
-      <ProductList heading="Ladies Shoes" data={products_row_two} />
-      <ProductList heading="Gents Shoes" data={products_row_three} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/cart" element={<Cart />} />
+      </Routes>
     </div>
   );
 }
